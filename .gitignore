@@ -1,4 +1,5 @@
 *.iml
 .idea/
 lib/
-*~
+target/
+tomcat/
