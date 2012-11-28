@@ -45,6 +45,7 @@
 
 
     <target name="retrieve" depends="install-ivy" description="--> installs dependencies">
+        <mkdir dir="${lib.dir}"/>
         <ivy:retrieve pattern="${lib.dir}/[artifact]-[type]-[revision].[ext]" />
     </target>
 
