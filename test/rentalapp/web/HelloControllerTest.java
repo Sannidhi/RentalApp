@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 import static junit.framework.Assert.assertEquals;
 
 
-public class HelloControllerTests {
+public class HelloControllerTest {
 
     @Test
     public void testHandleRequestView() throws Exception{		

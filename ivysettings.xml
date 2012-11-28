@@ -1,0 +1,6 @@
+<ivysettings>
+    <settings defaultResolver="IBiblio_Internet" circularDependencyStrategy="error" />
+    <resolvers>
+        <ibiblio name="IBiblio_Internet" m2compatible="true" validate="false"/>
+    </resolvers>
+</ivysettings>
