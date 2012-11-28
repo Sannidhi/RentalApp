@@ -1,19 +1,23 @@
 <?xml version="1.0"?>
 
-<project xmlns:ivy="antlib:org.apache.ivy.ant" name="rentalapp" basedir="." default="usage">
-    <!--<property file="build.properties"/>-->
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="rentalapp" basedir="." default="usage" >
 
     <property name="src.dir" value="src"/>
     <property name="web.dir" value="war"/>
     <property name="build.dir" value="${web.dir}/WEB-INF/classes"/>
     <property name="name" value="rentalapp"/>
+    <property name="lib.dir" value="lib"/>
 
     <property name="test.dir" value="test"/>
-
 
     <property name="ivy.install.version" value="2.2.0" />
     <property name="ivy.jar.dir" value="${basedir}/ivy" />
     <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar" />
+
+    <property name="tomcat.home" value="${basedir}/tomcat"/>
+    <property name="tomcatconfig.dir" value="${basedir}/tomcat/config"/>
+    <property name="tomcatlog.dir" value="${basedir}/tomcat/log"/>
+    <!--<property name="deploy.path" value="${tomcat.home}/apache-tomcat-7.0.33/apache-tomcat-7.0.33/webapps"/>-->
 
 
     <!-- =================================
@@ -32,27 +36,23 @@
         <!-- try to load ivy here from local ivy dir, in case the user has not already dropped it into ant's lib dir
         (note that the latter copy will always take precedence). We will not fail as long as local lib dir exists
         (it may be empty) and ivy is in at least one of ant's lib dir or the local lib dir. -->
-
         <path id="ivy.lib.path">
             <fileset dir="${ivy.jar.dir}" includes="*.jar"/>
         </path>
-
+        <!--loads ivy tasks and resources into namespace-->
         <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
-        <!--<ivy:configure/>-->
     </target>
 
-    <property name="tomcatconfig.dir" value="${basedir}/tomcat/config"/>
-    <property name="tomcatlog.dir" value="${basedir}/tomcat/log"/>
-    <property name="tomcat.home" value="${basedir}/tomcat/"/>
 
-    <target name="fetch-dependencies" depends="install-ivy" description="--> installs dependencies">
+    <target name="retrieve" depends="install-ivy" description="--> installs dependencies">
+        <ivy:retrieve pattern="${lib.dir}/[artifact]-[type]-[revision].[ext]" />
+    </target>
 
+    <target name="install-tomcat" depends="install-ivy" description="--> installs tomcat">
         <ivy:cachepath pathid="cargo.jars" organisation="org.codehaus.cargo" module="cargo-core-uberjar" revision="1.+" inline="true"/>
         <ivy:cachepath pathid="cargo.jars" organisation="org.codehaus.cargo" module="cargo-ant" revision="1.+" inline="true"/>
 
-        <!--<taskdef resource="org/apache/catalina/ant/antlib.xml" uri="antlib:org.apache.catalina.ant" classpathref="tomcat.jars"/>-->
         <taskdef resource="cargo.tasks" classpathref="cargo.jars"/>
-        <!--<taskdef name="start" classname="org.apache.catalina.ant.StartTask" classpathref="tomcat.jars"/>-->
 
         <delete dir="${tomcatconfig.dir}" />
         <mkdir dir="${tomcatlog.dir}"/>
@@ -60,11 +60,8 @@
         <echo message="Starting Cargo..."/>
         <echo message="Using tomcat.home = ${tomcat.home} "/>
         <echo message="Using war = ${name} "/>
-        <!--<echo message="Jars used = ${cargo-uberjar} , ${cargo-antjar}"/>-->
 
-
-        <cargo containerId="tomcat7x" output="${tomcatlog.dir}/output.log"
-               log="${tomcatlog.dir}/cargo.log" action="start">
+        <cargo containerId="tomcat7x" output="${tomcatlog.dir}/output.log" log="${tomcatlog.dir}/cargo.log" action="start">
 
             <zipUrlInstaller installUrl="http://www.eng.lsu.edu/mirrors/apache/tomcat/tomcat-7/v7.0.33/bin/apache-tomcat-7.0.33.zip"
             downloadDir="target/downloads"
@@ -72,7 +69,6 @@
             <!--extractDir="target/extracts"/>-->
 
             <configuration home="${tomcatconfig.dir}">
-                <!--<property name="cargo.process.spawn" value="true"/>-->
                 <property name="cargo.servlet.port" value="8080"/>
                 <property name="cargo.logging" value="high"/>
             </configuration>
@@ -83,7 +79,7 @@
 
     <!-- Define where the libraries (.jars) are -->
     <path id="master-classpath">
-        <fileset dir="${web.dir}/WEB-INF/lib">
+        <fileset dir="${lib.dir}">
             <include name="*.jar"/>
         </fileset>
 
@@ -114,7 +110,7 @@
         <delete dir="${build.dir}"/>
     </target>
 
-    <target name="build" depends="clean, fetch-dependencies" description="Compile main source tree java files">
+    <target name="build" depends="clean, retrieve" description="Compile main source tree java files">
         <mkdir dir="${build.dir}"/>
         <javac destdir="${build.dir}" source="1.5" target="1.5" debug="true"
         deprecation="false" optimize="false" failonerror="true">
@@ -123,7 +119,7 @@
         </javac>
     </target>
 
-    <target name="buildtests" description="Compile test tree java files">
+    <target name="buildtests" depends="retrieve" description="Compile test tree java files">
         <mkdir dir="${build.dir}"/>
         <javac destdir="${build.dir}" source="1.5" target="1.5" debug="true"
                deprecation="false" optimize="false" failonerror="true">
@@ -182,13 +178,14 @@
         </copy>
     </target>
 
-    <target name="start" depends="fetch-dependencies" description="Starts tomcat application">
-        <cargo containerId="tomcat7x" home="${tomcat.home}apache-tomcat-7.0.33/apache-tomcat-7.0.33" output="${tomcatlog.dir}/output.log"
+    <target name="start" depends="install-tomcat" description="Starts tomcat application">
+        <cargo containerId="tomcat7x" home="${tomcat.home}/apache-tomcat-7.0.33/apache-tomcat-7.0.33" output="${tomcatlog.dir}/output.log"
                log="${tomcatlog.dir}/cargo.log" action="run">
 
-            <configuration home="${tomcatconfig.dir}" type="existing">
+            <configuration home="${tomcatconfig.dir}" type="standalone">
                 <property name="cargo.servlet.port" value="8080"/>
                 <property name="cargo.logging" value="high"/>
+                <property name="cargo.servlet.users" value="admin::manager|tomcat:tomcat"/>
             </configuration>
         </cargo>
     </target>
