@@ -25,5 +25,8 @@
         <!--mysql-->
         <dependency org="mysql" name="mysql-connector-java" rev="5.1.21" conf="default"/>
 
+        <!--cglib2?-->
+        <dependency org="cglib" name="cglib" rev="2.2.2" conf="default"/>
+
     </dependencies>
 </ivy-module>

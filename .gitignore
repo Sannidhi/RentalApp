@@ -4,3 +4,5 @@ lib/
 target/
 tomcat/
 *.class
+/build
+/out

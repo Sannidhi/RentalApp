@@ -14,6 +14,7 @@ import java.util.List;
 
 @Controller
 public class AllListingsController {
+
     @Autowired
     @Qualifier("listingDAO")
     private ListingDAO dao;
@@ -26,6 +27,8 @@ public class AllListingsController {
 
         return "listings";
     }
+
+
 
     public void setDao(ListingDAO dao) {
         this.dao = dao;

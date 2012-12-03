@@ -16,7 +16,7 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:hibernateContext-test.xml"})
 @Transactional
-public class ListingDAOTest {
+public class ListingDAOImplTest {
     @Autowired
     private ListingDAO listingDAO;
 
