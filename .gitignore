@@ -1,8 +1,15 @@
 .idea/workspace.xml
 .idea/tasks.xml
+
+# build and output folders
 lib/
 target/
 tomcat/
+build/
+out/
+
+# .class files 
 *.class
-/build
-/out
+
+# backup files
+*~
