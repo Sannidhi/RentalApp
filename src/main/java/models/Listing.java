@@ -10,8 +10,8 @@ import javax.persistence.*;
 public class Listing {
 
     @Id
-    @GeneratedValue(generator = "listingId")
-    @GenericGenerator(name = "listingId", strategy = "increment")
+    @GeneratedValue(generator = "generator")
+    @GenericGenerator(name = "generator", strategy = "increment")
     private long id;
 
     @Column

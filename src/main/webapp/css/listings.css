@@ -1,0 +1,36 @@
+.listing{
+    font-family: Arial, sans-serif;
+    margin: 10px 100px 10px 100px;
+    padding: 20px;
+    height: 100px;
+    border-width: 0px 0px 2px 0px;
+    border-color: #d3d3d3;
+    border-style: solid;
+}
+
+.address{
+    font-size: 30px;
+    color: #87cefa;
+    float: left;
+    clear: both;
+}
+
+.price{
+    float: right;
+    font-size: 50px;
+}
+
+.number-of-bedrooms {
+    float: left;
+    clear: both;
+}
+
+.numbers {
+    font-size: 20px;
+    color: #483d8b;
+}
+
+.contact{
+    float: left;
+    clear: both;
+}
