@@ -26,7 +26,7 @@ public class ListingDAOImpl implements ListingDAO {
 
     @Override
     public List<Listing> fetchAll() {
-        return entityManager.createQuery("From Listing").getResultList();
+        return entityManager.createQuery("From Listing order by price").getResultList();
     }
 
     @Override

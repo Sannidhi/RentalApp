@@ -7,6 +7,7 @@ target/
 tomcat/
 build/
 out/
+.gradle/
 
 # .class files 
 *.class

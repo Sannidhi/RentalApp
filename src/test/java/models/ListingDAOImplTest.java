@@ -55,6 +55,6 @@ public class ListingDAOImplTest {
 
 
     private Listing createListing() {
-        return new Listing("address", "numberOfBedrooms", "price", "squareFootage", "contact");
+        return new Listing("address", 1, 1, 1, "contact");
     }
 }

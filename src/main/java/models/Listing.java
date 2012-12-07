@@ -18,13 +18,13 @@ public class Listing {
     private String address;
 
     @Column
-    private String numberOfBedrooms;
+    private int numberOfBedrooms;
 
     @Column
-    private String price;
+    private long price;
 
     @Column
-    private String squareFootage;
+    private double squareFootage;
 
     @Column
     private String contact;
@@ -33,7 +33,7 @@ public class Listing {
     public Listing() {
     }
 
-    public Listing(int id, String address, String numberOfBedrooms, String price, String squareFootage, String contact) {
+    public Listing(int id, String address, int numberOfBedrooms, long price, double squareFootage, String contact) {
         this.id = id;
         this.address = address;
         this.numberOfBedrooms = numberOfBedrooms;
@@ -42,7 +42,7 @@ public class Listing {
         this.contact = contact;
     }
 
-    public Listing(String address, String numberOfBedrooms, String price, String squareFootage, String contact) {
+    public Listing(String address, int numberOfBedrooms, long price, double squareFootage, String contact) {
         this.address = address;
         this.numberOfBedrooms = numberOfBedrooms;
         this.price = price;
@@ -55,15 +55,15 @@ public class Listing {
         return address;
     }
 
-    public String getNumberOfBedrooms() {
+    public int getNumberOfBedrooms() {
         return numberOfBedrooms;
     }
 
-    public String getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public String getSquareFootage() {
+    public double getSquareFootage() {
         return squareFootage;
     }
 

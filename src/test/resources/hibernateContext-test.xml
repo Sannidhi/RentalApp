@@ -44,7 +44,6 @@ http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
     <tx:annotation-driven/>
 
     <bean id="ListingDAO" class="models.ListingDAOImpl"/>
-    <!--<bean id="Listing" class="models.Listing"/>-->
 
 
 </beans>
